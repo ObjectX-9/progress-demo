@@ -14,11 +14,9 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
   const [progress, setProgress] = useState(0);
   const progressInterval = useRef<ReturnType<typeof setInterval>>();
   const startTime = useRef<number>(0);
+  const lastProgress = useRef(0); // 用来追踪最后的进度值
 
   const updateProgress = () => {
-    // const currentTime = Date.now();
-    // const elapsedTime = (currentTime - startTime.current) / 1000;
-
     if (progress >= 90) {
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
@@ -26,17 +24,24 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
       return;
     }
 
-    const maxIncrement = 90 * 0.02
+    const maxIncrement = 100 * 0.02;
+    const minIncrement = maxIncrement * 0.5;
 
     setProgress(prev => {
-      const increment = Math.random() * maxIncrement;
-      return Math.min(prev + increment, 90);
+      // 这里需要ref跟踪，否则会因为setProgress调用的时序问题导致一卡一卡的
+      const increment = minIncrement + (Math.random() * (maxIncrement - minIncrement));
+      const nextProgress = Math.max(lastProgress.current + increment, prev + increment);
+      const finalProgress = Math.min(nextProgress, 90);
+      lastProgress.current = finalProgress;
+      console.log("🚀 ~ updateProgress ~ prev:", prev, finalProgress);
+      return finalProgress;
     });
   };
 
   const handleClick = async () => {
     setIsLoading(true);
     setProgress(0);
+    lastProgress.current = 0; // 重置最后的进度值
     startTime.current = Date.now();
 
     progressInterval.current = setInterval(updateProgress, 333);
@@ -58,9 +63,6 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
       setProgress(0);
     }
   };
-
-  console.log(" ~ progress:", progress)
-
 
   return (
     <button
