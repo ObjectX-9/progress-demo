@@ -1,0 +1,175 @@
+.domain-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  overflow: hidden;
+}
+
+.domain-card-header {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.back-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #374151;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.domain-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.copy-button {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+}
+
+.copy-button:hover {
+  background: #F3F4F6;
+}
+
+.domain-card-content {
+  padding: 1.5rem;
+}
+
+.domain-card-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
+  color: #111827;
+}
+
+.domain-card-content p {
+  margin: 0 0 1.5rem 0;
+  color: #6B7280;
+  font-size: 0.875rem;
+}
+
+.dns-table {
+  background: #F9FAFB;
+  border-radius: 8px;
+  padding: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.dns-row {
+  display: grid;
+  grid-template-columns: 80px 80px 1fr;
+  gap: 1rem;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+}
+
+.dns-row.header {
+  color: #6B7280;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+}
+
+.status-message {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  font-size: 0.875rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.status-message.checking {
+  opacity: 1;
+  transform: translateY(0);
+  background: #F3F4F6;
+  color: #374151;
+}
+
+.status-message.success {
+  opacity: 1;
+  transform: translateY(0);
+  background: #ECFDF5;
+  color: #065F46;
+}
+
+.loading-spinner,
+.button-spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+.button-spinner {
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  border-width: 1.5px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.publish-button {
+  width: 100%;
+  padding: 0.75rem;
+  background: #000000;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.publish-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.publish-button:not(:disabled):hover {
+  background: #1F2937;
+}
+
+.publish-button:not(:disabled):active {
+  background: #111827;
+}
+
+.publish-button.checking {
+  background: #9CA3AF;
+}
+
+.publish-button.publishing {
+  background: #4B5563;
+}

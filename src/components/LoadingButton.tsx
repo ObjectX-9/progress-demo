@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './LoadingButton.css';
 
 interface LoadingButtonProps {
@@ -11,15 +11,56 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
   className = '',
 }) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const progressInterval = useRef<NodeJS.Timeout>();
+  const startTime = useRef<number>(0);
+
+  const updateProgress = () => {
+    const currentTime = Date.now();
+    const elapsedTime = (currentTime - startTime.current) / 1000;
+    
+    if (progress >= 85 || elapsedTime >= 5) {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+      return;
+    }
+  
+    const maxIncrement = (85 / (5 * 3)) * 2;
+    
+    setProgress(prev => {
+      const increment = Math.random() * maxIncrement;
+      return Math.min(prev + increment, 85);
+    });
+  };
 
   const handleClick = async () => {
     setIsLoading(true);
+    setProgress(0);
+    startTime.current = Date.now();
+    
+    progressInterval.current = setInterval(updateProgress, 333);
+    
     try {
       await onClick();
+      
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
+
+      setProgress(100);
+      await new Promise(resolve => setTimeout(resolve, 500));
     } finally {
+      if (progressInterval.current) {
+        clearInterval(progressInterval.current);
+      }
       setIsLoading(false);
+      setProgress(0);
     }
   };
+
+  console.log(" ~ progress:", progress)
+
 
   return (
     <button
@@ -31,7 +72,7 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
         <span className={`button-text ${isLoading ? 'slide-up' : ''}`}>Connect</span>
         <span className={`button-text ${isLoading ? 'slide-up' : ''}`}>Verifying...</span>
       </div>
-      {isLoading && <div className="progress-bar" />}
+      {isLoading && <div className="progress-bar" style={{ width: `${progress}%`, transition: 'width 0.3s ease-in-out' }} />}
     </button>
   );
 };

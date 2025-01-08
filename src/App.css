@@ -6,11 +6,13 @@
 }
 
 .app {
+  min-height: 100vh;
+  min-width: 1000px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  background-color: #F3F4F6;
+  padding: 1rem;
 }
 
 .logo {
