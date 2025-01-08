@@ -12,7 +12,7 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
-  const progressInterval = useRef<NodeJS.Timeout>();
+  const progressInterval = useRef<ReturnType<typeof setInterval>>();
   const startTime = useRef<number>(0);
 
   const updateProgress = () => {
