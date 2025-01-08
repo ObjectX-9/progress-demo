@@ -16,21 +16,21 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
   const startTime = useRef<number>(0);
 
   const updateProgress = () => {
-    const currentTime = Date.now();
-    const elapsedTime = (currentTime - startTime.current) / 1000;
-    
-    if (progress >= 85 || elapsedTime >= 5) {
+    // const currentTime = Date.now();
+    // const elapsedTime = (currentTime - startTime.current) / 1000;
+
+    if (progress >= 90) {
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
       }
       return;
     }
-  
-    const maxIncrement = (85 / (5 * 3)) * 2;
-    
+
+    const maxIncrement = 90 * 0.02
+
     setProgress(prev => {
       const increment = Math.random() * maxIncrement;
-      return Math.min(prev + increment, 85);
+      return Math.min(prev + increment, 90);
     });
   };
 
@@ -38,12 +38,12 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
     setIsLoading(true);
     setProgress(0);
     startTime.current = Date.now();
-    
+
     progressInterval.current = setInterval(updateProgress, 333);
-    
+
     try {
       await onClick();
-      
+
       if (progressInterval.current) {
         clearInterval(progressInterval.current);
       }
@@ -72,7 +72,12 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
         <span className={`button-text ${isLoading ? 'slide-up' : ''}`}>Connect</span>
         <span className={`button-text ${isLoading ? 'slide-up' : ''}`}>Verifying...</span>
       </div>
-      {isLoading && <div className="progress-bar" style={{ width: `${progress}%`, transition: 'width 0.3s ease-in-out' }} />}
+      {isLoading && <div className="progress-bar" style={{
+        width: `${progress}%`,
+        borderTopRightRadius: `${(progress / 100) * 12}px`,
+        borderBottomRightRadius: `${(progress / 100) * 12}px`,
+        transition: 'width 0.333s linear, border-radius 0.333s linear'
+      }} />}
     </button>
   );
 };
